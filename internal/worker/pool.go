@@ -39,7 +39,6 @@ func (p *Pool) worker(id int) {
 			return
 		default:
 			if err := p.taskSvc.ProcessNextTask(); err != nil {
-				// در صورتی که تسکی نباشد کمی استراحت می‌کنیم.
 				time.Sleep(1 * time.Second)
 			}
 		}
