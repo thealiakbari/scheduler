@@ -11,7 +11,6 @@ type TaskHeap []*domain.Task
 
 func (h TaskHeap) Len() int { return len(h) }
 func (h TaskHeap) Less(i, j int) bool {
-	// اولویت کمتر نشان‌دهنده درجه بالاتر (High=0, Low=2)
 	return h[i].Priority < h[j].Priority
 }
 func (h TaskHeap) Swap(i, j int) { h[i], h[j] = h[j], h[i] }
