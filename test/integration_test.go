@@ -17,7 +17,6 @@ func TestTaskCreationAndProcessing(t *testing.T) {
 	pq := queue.NewPriorityQueue()
 	svc := application.NewTaskService(storage, pq)
 
-	// شبیه‌سازی ثبت تسک
 	handler := http.HandlerFunc(svc.HandleCreateTask)
 	payload := `{"priority":0, "payload": {"data": "test"}}`
 	req := httptest.NewRequest("POST", "/tasks", strings.NewReader(payload))
@@ -27,7 +26,6 @@ func TestTaskCreationAndProcessing(t *testing.T) {
 	if w.Code != http.StatusOK {
 		t.Fatalf("expected status 200, got %d", w.Code)
 	}
-	// بررسی صحت پاسخ
 	var resp application.TaskResponse
 	if err := json.Unmarshal(w.Body.Bytes(), &resp); err != nil {
 		t.Fatal(err)
@@ -36,12 +34,10 @@ func TestTaskCreationAndProcessing(t *testing.T) {
 		t.Errorf("expected status pending, got %s", resp.Status)
 	}
 
-	// پردازش تسک
 	if err := svc.ProcessNextTask(); err != nil {
 		t.Fatal(err)
 	}
 
-	// بررسی وضعیت پس از پردازش
 	status, err := svc.GetTaskStatus(resp.ID)
 	if err != nil {
 		t.Fatal(err)
